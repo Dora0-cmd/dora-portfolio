@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dora, In Between Places</title>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
+
+    :root {
+      --bg: #fff8f4;
+      --soft: #f4e9e4;
+      --accent-yellow: #fdf6e8;
+      --accent-yellow-deep: #eddcaa;
+      --ink: #332225;
+      --muted: #7d6569;
+      --rose: #a05c4a;
+      --rose-light: #d9a898;
+      --line: rgba(62, 42, 46, 0.12);
+      --card: rgba(255, 255, 255, 0.7);
+      --shadow: 0 8px 32px rgba(74, 50, 55, 0.08);
+      --shadow-sm: 0 4px 16px rgba(74, 50, 55, 0.06);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      color: var(--ink);
+      background: var(--bg);
+      background-image:
+        radial-gradient(ellipse at 0% 0%, rgba(244, 221, 215, 0.55) 0%, transparent 45%),
+        radial-gradient(ellipse at 100% 15%, rgba(255, 240, 204, 0.4) 0%, transparent 40%);
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+    .container {
+      width: min(1180px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    /* ── NAV ── */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(255, 248, 244, 0.88);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav {
+      height: 68px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+    }
+
+    .brand-sub {
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+    }
+
+    .nav-links a { transition: color 0.2s; }
+    .nav-links a:hover { color: var(--ink); }
+
+    .tiny {
+      font-size: 9px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ── HERO ── */
+    .hero { padding: 30px 0 22px; }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 0.88fr 1.12fr;
+      gap: 30px;
+      align-items: center;
+    }
+
+    .hero-eyebrow {
+      font-size: 10px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(36px, 4.4vw, 58px);
+      font-weight: 500;
+      line-height: 1.0;
+      letter-spacing: -0.025em;
+      margin: 0 0 16px;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--rose);
+    }
+
+    .hero p {
+      color: var(--muted);
+      line-height: 1.75;
+      font-size: 13.5px;
+      max-width: 460px;
+    }
+
+    em {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      color: var(--rose);
+      font-size: 1.06em;
+    }
+
+    .hero-actions {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      padding: 9px 20px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.6);
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    .btn:hover { background: white; box-shadow: var(--shadow-sm); }
+
+    .btn-dark {
+      background: var(--ink);
+      color: white;
+      border-color: var(--ink);
+    }
+
+    .btn-dark:hover { background: #4a2e32; }
+
+    /* ── HERO COLLAGE ── */
+    .hero-collage {
+      position: relative;
+      height: 480px;
+    }
+
+    .hero-main {
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 57%;
+      height: 446px;
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .hero-main img { object-position: center top; }
+
+    .hero-side {
+      position: absolute;
+      left: 0;
+      bottom: 10px;
+      width: 45%;
+      height: 228px;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .hero-note {
+      position: absolute;
+      left: 28%;
+      top: 110px;
+      width: 218px;
+      padding: 16px 18px;
+      border-radius: 18px;
+      background: rgba(253, 246, 232, 0.94);
+      backdrop-filter: blur(12px);
+      box-shadow: var(--shadow-sm);
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 18px;
+      line-height: 1.38;
+      color: var(--ink);
+      border: 1px solid rgba(237, 220, 170, 0.55);
+    }
+
+    /* ── MARQUEE LINE ── */
+    .marquee-line {
+      padding: 20px 0 26px;
+      text-align: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: clamp(18px, 2.3vw, 28px);
+      color: var(--muted);
+      max-width: 820px;
+      margin: 0 auto;
+      font-weight: 400;
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      height: 1px;
+      background: var(--line);
+    }
+
+    /* ── SECTIONS ── */
+    .section { padding: 36px 0; }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: 0.78fr 1.22fr;
+      gap: 24px;
+      align-items: end;
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(28px, 3.4vw, 44px);
+      font-weight: 500;
+      line-height: 1.06;
+      letter-spacing: -0.018em;
+      margin: 6px 0 0;
+    }
+
+    .section-copy {
+      color: var(--muted);
+      line-height: 1.72;
+      font-size: 13.5px;
+      max-width: 580px;
+    }
+
+    /* ── PLACES MOSAIC ── */
+    .project-mosaic {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr 1fr;
+      gap: 12px;
+      align-items: end;
+    }
+
+    .mosaic-card {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      background: var(--soft);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .mosaic-card.one { height: 390px; }
+    .mosaic-card.two { height: 285px; }
+    .mosaic-card.three { height: 348px; }
+
+    .mosaic-card img { transition: transform 0.65s ease; }
+    .mosaic-card:hover img { transform: scale(1.03); }
+
+    .mosaic-caption {
+      position: absolute;
+      left: 12px;
+      right: 12px;
+      bottom: 12px;
+      padding: 10px 14px;
+      background: rgba(255, 248, 244, 0.9);
+      backdrop-filter: blur(10px);
+      border-radius: 14px;
+    }
+
+    .mosaic-caption h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 500;
+      line-height: 1.1;
+      margin: 4px 0 0;
+    }
+
+    /* ── ABOUT ── */
+    .about-layout {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 14px;
+      align-items: stretch;
+    }
+
+    .about-img {
+      height: auto;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .about-img img { object-position: center top; }
+
+    .about-card {
+      border-radius: 20px;
+      background: rgba(253, 246, 232, 0.45);
+      border: 1px solid rgba(237, 220, 170, 0.4);
+      box-shadow: var(--shadow-sm);
+      padding: 26px;
+      display: grid;
+      align-content: space-between;
+    }
+
+    .about-card p {
+      color: var(--muted);
+      line-height: 1.78;
+      font-size: 13.5px;
+      margin: 0 0 14px;
+    }
+
+    .signature {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 24px;
+      color: var(--rose);
+      margin: 8px 0 18px;
+    }
+
+    .mini-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .mini-row div {
+      height: auto;
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--soft);
+    }
+
+    /* ── SERVICES ── */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .service-card {
+      background: rgba(255, 255, 255, 0.68);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-sm);
+      border-radius: 20px;
+      padding: 22px;
+      min-height: 190px;
+      transition: box-shadow 0.25s, background 0.25s;
+    }
+
+    .service-card:hover {
+      box-shadow: var(--shadow);
+      background: white;
+    }
+
+    .service-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px;
+      font-weight: 500;
+      line-height: 1.1;
+      margin: 12px 0 10px;
+    }
+
+    .service-card p {
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 13px;
+    }
+
+    /* ── WORK ── */
+    .work-layout {
+      display: grid;
+      grid-template-columns: 0.72fr 1.28fr;
+      gap: 14px;
+      align-items: stretch;
+    }
+
+    .work-text {
+      border-radius: 20px;
+      background: rgba(253, 246, 232, 0.45);
+      border: 1px solid rgba(237, 220, 170, 0.4);
+      box-shadow: var(--shadow-sm);
+      padding: 26px;
+    }
+
+    .work-text h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 32px;
+      font-weight: 500;
+      line-height: 1.06;
+      margin: 10px 0 14px;
+    }
+
+    .work-text p {
+      color: var(--muted);
+      line-height: 1.75;
+      font-size: 13.5px;
+      margin: 0 0 12px;
+    }
+
+    .work-images {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .work-img {
+      border-radius: 16px;
+      overflow: hidden;
+      background: var(--soft);
+      box-shadow: var(--shadow-sm);
+      height: auto;
+    }
+
+    .work-img.tall {
+      height: auto;
+      grid-row: span 2;
+    }
+
+    .work-img img { object-fit: cover; }
+
+    /* ── JOURNAL ── */
+    .journal-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .journal-card {
+      background: rgba(255, 255, 255, 0.68);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-sm);
+      border-radius: 20px;
+      padding: 22px;
+      min-height: 175px;
+      transition: box-shadow 0.25s, background 0.25s;
+    }
+
+    .journal-card:hover {
+      box-shadow: var(--shadow);
+      background: white;
+    }
+
+    .journal-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 500;
+      line-height: 1.18;
+      margin: 10px 0 10px;
+    }
+
+    .journal-card p {
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 13px;
+    }
+
+    /* ── CONTACT ── */
+    .contact-layout {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 14px;
+    }
+
+    .contact-card,
+    .form-card {
+      background: rgba(255, 255, 255, 0.68);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-sm);
+      border-radius: 20px;
+      padding: 26px;
+    }
+
+    .contact-card {
+      background: rgba(253, 246, 232, 0.45);
+      border: 1px solid rgba(237, 220, 170, 0.4);
+    }
+
+    .contact-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 30px;
+      font-weight: 500;
+      line-height: 1.1;
+      margin: 10px 0 13px;
+    }
+
+    .contact-card p {
+      color: var(--muted);
+      line-height: 1.72;
+      font-size: 13.5px;
+    }
+
+    .contact-list {
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 13px;
+      display: grid;
+      gap: 7px;
+      margin-top: 16px;
+    }
+
+    .field {
+      display: grid;
+      gap: 5px;
+      margin-bottom: 10px;
+    }
+
+    .field label {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .field input,
+    .field textarea,
+    .field select {
+      width: 100%;
+      border: 1px solid rgba(62, 42, 46, 0.1);
+      border-radius: 10px;
+      padding: 10px 12px;
+      background: rgba(255, 255, 255, 0.82);
+      font: 300 13px 'DM Sans', sans-serif;
+      outline: none;
+      color: var(--ink);
+      transition: border-color 0.2s;
+    }
+
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus {
+      border-color: var(--rose-light);
+    }
+
+    .field textarea { min-height: 90px; resize: vertical; }
+
+    /* ── FOOTER ── */
+    .footer {
+      padding: 20px 0 28px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .footer-wrap {
+      border-top: 1px solid var(--line);
+      padding-top: 18px;
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .social-link {
+      border-bottom: 1px solid rgba(52, 35, 38, 0.28);
+      padding-bottom: 2px;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .social-link:hover { border-color: var(--rose); color: var(--rose); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .hero-grid, .section-head, .project-mosaic,
+      .about-layout, .services-grid, .work-layout,
+      .journal-grid, .contact-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-collage { height: 520px; }
+      .hero-main { width: 76%; }
+      .hero-side { width: 50%; }
+      .hero-note { left: 4%; }
+    }
+
+    @media (max-width: 640px) {
+      .nav { height: auto; padding: 14px 0; flex-direction: column; align-items: flex-start; gap: 10px; }
+      .nav-links { gap: 14px; flex-wrap: wrap; }
+      .hero-main { width: 86%; height: 360px; }
+      .hero-side { width: 60%; height: 200px; }
+      .hero-note { width: 185px; font-size: 15px; }
+      .work-images { grid-template-columns: 1fr; }
+      .work-img.tall { height: 280px; grid-row: span 1; }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="container nav">
+      <div>
+        <div class="brand-name">Dora, In Between Places</div>
+        <div class="brand-sub">Creative strategy · luxury storytelling</div>
+      </div>
+
+      <nav class="nav-links">
+        <a href="#home">Home</a>
+        <a href="#places">Places</a>
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#work">Work</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero" id="home">
+      <div class="container hero-grid">
+        <div>
+          <div class="hero-eyebrow">Sam · creative strategist · visual storyteller</div>
+          <h1>Visual stories for places people want to <em>remember.</em></h1>
+          <p>
+            I'm <em>Sam</em>, the person behind <em>Dora, In Between Places</em>.
+            I help boutique stays, cafés, and lifestyle spaces translate their atmosphere into
+            visual storytelling, content direction, and refined digital presence.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn btn-dark" href="#places">View places</a>
+            <a class="btn" href="#contact">Start a project</a>
+          </div>
+        </div>
+
+        <div class="hero-collage">
+          <div class="hero-main">
+            <img src="images/hero.jpg" alt="Sam in a bright interior">
+          </div>
+
+          <div class="hero-note">
+            Soft luxury, slow stories, and spaces with feeling.
+          </div>
+
+          <div class="hero-side">
+            <img src="images/about.jpg" alt="Sam near a waterfall">
+          </div>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="marquee-line">
+          Visual narratives for hospitality-led brands — designed to make a place feel desired.
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- PLACES -->
+    <section class="section" id="places">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="tiny">Selected places</div>
+            <h2 class="section-title">Atmosphere, <em>edited.</em></h2>
+          </div>
+          <div class="section-copy">
+            A compact visual archive of stays, corners, textures, and experiences captured through Dora's lens.
+          </div>
+        </div>
+
+        <div class="project-mosaic">
+          <div class="mosaic-card one">
+            <img src="images/treehouse-sam-pink.jpg" alt="Sam at Landour Treehouse">
+            <div class="mosaic-caption">
+              <div class="tiny">Mussoorie</div>
+              <h3>Landour Treehouse</h3>
+            </div>
+          </div>
+
+          <div class="mosaic-card two">
+            <img src="images/treehouse-detail.jpg" alt="Treehouse detail">
+            <div class="mosaic-caption">
+              <div class="tiny">Interior mood</div>
+              <h3>Quiet corners</h3>
+            </div>
+          </div>
+
+          <div class="mosaic-card three">
+            <img src="images/treehouse-room-day.jpg" alt="Treehouse room">
+            <div class="mosaic-caption">
+              <div class="tiny">Stay storytelling</div>
+              <h3>Slow light</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ABOUT -->
+    <section class="section" id="about">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="tiny">About</div>
+            <h2 class="section-title">Strategy, but softer.<br><em>Storytelling,</em> but sharper.</h2>
+          </div>
+          <div class="section-copy">
+            I'm a data scientist by profession, but my creative world has always lived in places,
+            visual mood, and the stories between what a brand shows and what a person feels.
+          </div>
+        </div>
+
+        <div class="about-layout">
+          <div class="about-img">
+            <img src="images/about.jpg" alt="Sam by a waterfall">
+          </div>
+
+          <div class="about-card">
+            <div>
+              <p>
+                This space is an extension of that —
+                <em>where structure meets softness, and strategy meets emotion.</em>
+                I'm building my path as a creative strategist for hospitality and lifestyle brands that want more than just content.
+              </p>
+
+              <p>
+                I care about visual pacing, emotional clarity, and digital spaces that carry a brand's atmosphere with intention.
+              </p>
+
+              <div class="signature">— Sam, through Dora</div>
+            </div>
+
+            <div class="mini-row">
+              <div><img src="images/treehouse-detail.jpg" alt="Treehouse detail"></div>
+              <div><img src="images/treehouse-room-night.jpg" alt="Treehouse night"></div>
+              <div><img src="images/treehouse-reading.jpg" alt="Sam reading"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- SERVICES -->
+    <section class="section" id="services">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="tiny">Services</div>
+            <h2 class="section-title">What I can shape<br>for your brand.</h2>
+          </div>
+          <div class="section-copy">
+            A compact creative studio for places with personality — combining visual storytelling,
+            brand direction, and digital presence.
+          </div>
+        </div>
+
+        <div class="services-grid">
+          <div class="service-card">
+            <div class="tiny">01</div>
+            <h3>Creative Strategy</h3>
+            <p>Positioning, mood direction, and storytelling angles for boutique hospitality and lifestyle spaces.</p>
+          </div>
+
+          <div class="service-card">
+            <div class="tiny">02</div>
+            <h3>Visual Storytelling</h3>
+            <p>Photography-led content direction and short-form story concepts that make a place feel desirable.</p>
+          </div>
+
+          <div class="service-card">
+            <div class="tiny">03</div>
+            <h3>Website Design</h3>
+            <p>Refined landing pages and digital experiences that translate atmosphere into a polished online presence.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- WORK -->
+    <section class="section" id="work">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="tiny">Selected work</div>
+            <h2 class="section-title">Landour Treehouse,<br><em>through mood.</em></h2>
+          </div>
+          <div class="section-copy">
+            A hospitality collaboration from Mussoorie — shaped through warm interiors, slow light,
+            lived-in corners, and the quiet feeling of being tucked away.
+          </div>
+        </div>
+
+        <div class="work-layout">
+          <div class="work-text">
+            <div class="tiny">Hospitality collaboration · Mussoorie</div>
+            <h3>Landour Treehouse</h3>
+            <p>
+              Instead of treating the stay like inventory, I wanted the visuals to feel like a memory:
+              the lamp glow, the wicker textures, the window light, the unhurried pace.
+            </p>
+            <p>
+              The direction: <em>cozy, cinematic, intimate, and quietly editorial.</em>
+            </p>
+            <a class="btn" href="#contact">Build something similar</a>
+          </div>
+
+          <div class="work-images">
+            <div class="work-img tall">
+              <img src="images/treehouse-room-night.jpg" alt="Landour Treehouse night">
+            </div>
+            <div class="work-img">
+              <img src="images/treehouse-detail.jpg" alt="Treehouse detail">
+            </div>
+            <div class="work-img">
+              <img src="images/treehouse-room-day.jpg" alt="Treehouse room day">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- JOURNAL -->
+    <section class="section" id="journal">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="tiny">Journal</div>
+            <h2 class="section-title">Notes on cities,<br>freedom, and <em>becoming.</em></h2>
+          </div>
+          <div class="section-copy">
+            The journal is where the personal voice lives — fragments from movement, observation,
+            longing, and the kind of travel that changes your inner landscape.
+          </div>
+        </div>
+
+        <div class="journal-grid">
+          <div class="journal-card">
+            <div class="tiny">Cities</div>
+            <h3>Places I carry after I leave them.</h3>
+            <p>Streets, cafés, corners, and textures that quietly teach me how atmosphere works.</p>
+          </div>
+
+          <div class="journal-card">
+            <div class="tiny">Freedom</div>
+            <h3>What freedom feels like after the novelty fades.</h3>
+            <p>Soft reflections on independence, becoming, and learning to belong to yourself.</p>
+          </div>
+
+          <div class="journal-card">
+            <div class="tiny">Travel notes</div>
+            <h3>Between hotel windows and transit thoughts.</h3>
+            <p>Small observations from movement, mood, and the memories that stay.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- CONTACT -->
+    <section class="section" id="contact">
+      <div class="container contact-layout">
+        <div class="contact-card">
+          <div class="tiny">Contact</div>
+          <h3>Let's make your place feel like a story people want to enter.</h3>
+          <p>
+            For boutique stays, cafés, hospitality brands, and lifestyle spaces looking for a presence that feels
+            <em>elevated, intimate, and distinct.</em>
+          </p>
+
+          <div class="contact-list">
+            <div><strong>Name:</strong> Sam</div>
+            <div><strong>Brand:</strong> Dora, In Between Places</div>
+            <div><strong>Email:</strong> dora86explorer@gmail.com</div>
+            <div><strong>Project type:</strong> Creative strategy · visual storytelling · website design</div>
+            <div>
+              <strong>Instagram:</strong>
+              <a class="social-link" href="https://www.instagram.com/dorathexplorer_._?igsh=MTBxanVncGMxenY1MQ%3D%3D&utm_source=qr" target="_blank">
+                @dorathexplorer_._
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-card">
+          <div class="tiny" style="margin-bottom: 14px;">Project enquiry</div>
+
+          <div class="field">
+            <label>Your name</label>
+            <input type="text" placeholder="Enter your name">
+          </div>
+
+          <div class="field">
+            <label>Your email</label>
+            <input type="email" placeholder="Enter your email">
+          </div>
+
+          <div class="field">
+            <label>Brand name</label>
+            <input type="text" placeholder="Enter your brand name">
+          </div>
+
+          <div class="field">
+            <label>Project type</label>
+            <select>
+              <option>Creative strategy</option>
+              <option>Visual storytelling</option>
+              <option>Website design</option>
+              <option>Brand storytelling</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Tell me about your vision</label>
+            <textarea placeholder="Share your brand, goals, and the feeling you want people to remember."></textarea>
+          </div>
+
+          <a class="btn btn-dark" href="mailto:dora86explorer@gmail.com?subject=Project%20Enquiry%20for%20Dora%2C%20In%20Between%20Places">
+            Send enquiry
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-wrap">
+      <div>Dora, In Between Places — soft luxury, digital atmosphere, and stories that linger.</div>
+      <a class="social-link" href="https://www.instagram.com/dorathexplorer_._?igsh=MTBxanVncGMxenY1MQ%3D%3D&utm_source=qr" target="_blank">
+        Follow along on Instagram
+      </a>
+    </div>
+  </footer>
+</body>
+</html>
