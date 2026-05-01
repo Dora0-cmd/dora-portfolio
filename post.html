@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog Post | Dora</title>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@300;400&display=swap');
+
+    body {
+      margin: 0;
+      font-family: 'DM Sans', sans-serif;
+      background: #fff8f4;
+      color: #332225;
+      line-height: 1.9;
+    }
+
+    .container {
+      width: min(900px, calc(100% - 40px));
+      margin: auto;
+      padding: 60px 0;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 40px;
+      font-size: 14px;
+      color: #7d6569;
+      text-decoration: none;
+    }
+
+    .post-date {
+      color: #7d6569;
+      font-size: 14px;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(42px, 6vw, 74px);
+      line-height: 1.05;
+      margin-bottom: 28px;
+    }
+
+    .hero-image {
+      width: 100%;
+      max-height: 620px;
+      object-fit: cover;
+      margin-bottom: 44px;
+      border-radius: 4px;
+    }
+
+    .excerpt {
+      font-size: 20px;
+      color: #7d6569;
+      margin-bottom: 42px;
+    }
+
+    .content {
+      font-size: 18px;
+    }
+
+    .content img {
+      width: 100%;
+      margin: 42px 0;
+      border-radius: 4px;
+    }
+
+    .content p {
+      margin-bottom: 30px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <a href="blog.html" class="back-link">← Back to Blog</a>
+
+    <div id="post"></div>
+  </div>
+
+  <script>
+    async function loadPost() {
+      const params = new URLSearchParams(window.location.search);
+      const slug = params.get("slug");
+
+      const response = await fetch("data/posts.json");
+      const posts = await response.json();
+
+      const post = posts.find(p => p.slug === slug);
+
+      if (!post) {
+        document.getElementById("post").innerHTML = "<h2>Post not found.</h2>";
+        return;
+      }
+
+      document.title = post.title;
+
+      document.getElementById("post").innerHTML = `
+        <div class="post-date">${post.date}</div>
+        <h1>${post.title}</h1>
+        <img class="hero-image" src="${post.heroImage}" alt="${post.title}">
+        <div class="excerpt">${post.excerpt}</div>
+        <div class="content">${post.content}</div>
+      `;
+    }
+
+    loadPost();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,70 @@
+body {
+  margin: 0;
+  font-family: "Georgia", serif;
+  background: #f6ece7;
+  color: #3b2f2f;
+}
+
+/* NAVBAR */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 50px;
+  background: #f6ece7;
+}
+
+.navbar h1 {
+  font-size: 20px;
+  letter-spacing: 1px;
+}
+
+.navbar a {
+  margin-left: 20px;
+  text-decoration: none;
+  color: #3b2f2f;
+}
+
+/* HERO */
+.hero {
+  position: relative;
+  text-align: center;
+}
+
+.hero img {
+  width: 100%;
+  height: 80vh;
+  object-fit: cover;
+}
+
+.hero-text {
+  position: absolute;
+  bottom: 50px;
+  left: 50px;
+  color: white;
+  max-width: 600px;
+}
+
+.hero-text h2 {
+  font-size: 40px;
+  line-height: 1.2;
+}
+
+.hero-text p {
+  font-size: 16px;
+  opacity: 0.9;
+}
+
+/* ABOUT */
+.about {
+  padding: 80px 50px;
+}
+
+.about h3 {
+  font-size: 30px;
+  margin-bottom: 20px;
+}
+
+.about p {
+  font-size: 18px;
+  line-height: 1.6;
+}
