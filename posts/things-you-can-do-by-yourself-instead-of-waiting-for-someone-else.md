@@ -8,7 +8,7 @@ excerpt: People are busy. Plans get cancelled. Friends move to different cities.
   be free, someone to choose the same day, the same café, the same mood, the
   same timing — we may end up postponing small joys for months.
 ---
-There was a time when I thought certain things needed company.
+There was a time when I thought certain things needed company. 
 
 A nice café needed a friend across the table. A weekend plan needed someone to say yes. A new place in the city felt better when there was someone walking beside me. Even something as simple as trying a new coffee, visiting a salon, buying flowers, or taking a short trip felt like it needed to be shared with someone else to feel complete.
 
