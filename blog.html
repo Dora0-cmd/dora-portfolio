@@ -256,46 +256,78 @@
   </footer>
 
   <script>
-    async function loadBlogs() {
-      const blogList = document.getElementById("blogList");
+  const repo = "Dora0-cmd/dora-portfolio";
 
-      try {
-        const response = await fetch("data/posts.json");
-        const posts = await response.json();
+  function parsePost(markdown, fileName) {
+    const match = markdown.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+    const data = {};
+    let body = markdown;
 
-        blogList.innerHTML = "";
-
-        posts.forEach(post => {
-          const card = document.createElement("article");
-          card.className = "blog-card";
-
-          card.innerHTML = `
-            <div class="blog-image">
-              <img src="${post.heroImage}" alt="${post.title}">
-            </div>
-
-            <div class="blog-content">
-              <div class="blog-date">${post.date}</div>
-              <h2>${post.title}</h2>
-              <p>${post.excerpt}</p>
-              <a class="read-more" href="post.html?slug=${post.slug}">Read More</a>
-            </div>
-          `;
-
-          blogList.appendChild(card);
-        });
-
-      } catch (error) {
-        blogList.innerHTML = `
-          <p>
-            Blog posts will appear here once your CMS is connected.
-          </p>
-        `;
-      }
+    if (match) {
+      body = match[2];
+      match[1].split("\n").forEach(line => {
+        const [key, ...rest] = line.split(":");
+        if (key && rest.length) {
+          data[key.trim()] = rest.join(":").trim().replace(/^["']|["']$/g, "");
+        }
+      });
     }
 
-    loadBlogs();
-  </script>
+    return {
+      title: data.title || fileName.replace(".md", ""),
+      date: data.date ? new Date(data.date).toLocaleDateString("en-GB", { day: "2-digit", month: "long", year: "numeric" }) : "",
+      heroImage: data.heroImage || "images/hero.jpg",
+      excerpt: data.excerpt || "",
+      slug: fileName.replace(".md", "")
+    };
+  }
+
+  async function loadBlogs() {
+    const blogList = document.getElementById("blogList");
+
+    try {
+      const filesResponse = await fetch(`https://api.github.com/repos/${repo}/contents/posts?ref=main`);
+      const files = await filesResponse.json();
+
+      const posts = await Promise.all(
+        files
+          .filter(file => file.name.endsWith(".md"))
+          .map(async file => {
+            const postResponse = await fetch(file.download_url);
+            const markdown = await postResponse.text();
+            return parsePost(markdown, file.name);
+          })
+      );
+
+      blogList.innerHTML = "";
+
+      posts.forEach(post => {
+        const card = document.createElement("article");
+        card.className = "blog-card";
+
+        card.innerHTML = `
+          <div class="blog-image">
+            <img src="${post.heroImage}" alt="${post.title}">
+          </div>
+
+          <div class="blog-content">
+            <div class="blog-date">${post.date}</div>
+            <h2>${post.title}</h2>
+            <p>${post.excerpt}</p>
+            <a class="read-more" href="post.html?slug=${post.slug}">Read More</a>
+          </div>
+        `;
+
+        blogList.appendChild(card);
+      });
+
+    } catch (error) {
+      blogList.innerHTML = "<p>Blog posts will appear here soon.</p>";
+    }
+  }
+
+  loadBlogs();
+</script>
 
 </body>
 </html>
