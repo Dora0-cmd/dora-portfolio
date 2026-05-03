@@ -81,33 +81,62 @@
   </div>
 
   <script>
-    async function loadPost() {
-      const params = new URLSearchParams(window.location.search);
-      const slug = params.get("slug");
+  const repo = "Dora0-cmd/dora-portfolio";
 
-      const response = await fetch("data/posts.json");
-      const posts = await response.json();
+  function parsePost(markdown) {
+    const match = markdown.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+    const data = {};
+    let body = markdown;
 
-      const post = posts.find(p => p.slug === slug);
-
-      if (!post) {
-        document.getElementById("post").innerHTML = "<h2>Post not found.</h2>";
-        return;
-      }
-
-      document.title = post.title;
-
-      document.getElementById("post").innerHTML = `
-        <div class="post-date">${post.date}</div>
-        <h1>${post.title}</h1>
-        <img class="hero-image" src="${post.heroImage}" alt="${post.title}">
-        <div class="excerpt">${post.excerpt}</div>
-        <div class="content">${post.content}</div>
-      `;
+    if (match) {
+      body = match[2];
+      match[1].split("\n").forEach(line => {
+        const [key, ...rest] = line.split(":");
+        if (key && rest.length) {
+          data[key.trim()] = rest.join(":").trim().replace(/^["']|["']$/g, "");
+        }
+      });
     }
 
-    loadPost();
-  </script>
+    return { data, body };
+  }
+
+  function markdownToHtml(markdown) {
+    return markdown
+      .replace(/!\[(.*?)\]\((.*?)\)/g, '<img src="$2" alt="$1">')
+      .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+      .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+      .replace(/^# (.*$)/gim, '<h1>$1</h1>')
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(.*?)\*/g, '<em>$1</em>')
+      .split(/\n\s*\n/)
+      .map(block => block.startsWith("<") ? block : `<p>${block}</p>`)
+      .join("");
+  }
+
+  async function loadPost() {
+    const params = new URLSearchParams(window.location.search);
+    const slug = params.get("slug");
+
+    const response = await fetch(`https://raw.githubusercontent.com/${repo}/main/posts/${slug}.md`);
+    const markdown = await response.text();
+
+    const post = parsePost(markdown);
+    const data = post.data;
+
+    document.title = data.title || "Blog Post";
+
+    document.getElementById("post").innerHTML = `
+      <div class="post-date">${data.date ? new Date(data.date).toLocaleDateString("en-GB", { day: "2-digit", month: "long", year: "numeric" }) : ""}</div>
+      <h1>${data.title}</h1>
+      <img class="hero-image" src="${data.heroImage}" alt="${data.title}">
+      <div class="excerpt">${data.excerpt}</div>
+      <div class="content">${markdownToHtml(post.body)}</div>
+    `;
+  }
+
+  loadPost();
+</script>
 
 </body>
 </html>
