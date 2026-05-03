@@ -2,8 +2,7 @@
 title: Things You Can Do by Yourself Instead of Waiting for Someone Else
 date: 2026-05-03T09:43:00.000+05:30
 heroImage: /images/uploads/chatgpt-image-apr-30-2026-08_58_23-pm.png
-excerpt: A gentle reminder that life becomes far more beautiful when you stop
-  waiting for others and start creating meaningful moments for yourself.
+excerpt: Stop waiting, start living beautifully for yourself.
 ---
 There was a time when I thought certain things needed company. 
 
